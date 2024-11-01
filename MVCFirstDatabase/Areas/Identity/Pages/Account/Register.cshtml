@@ -1,0 +1,192 @@
+﻿@page
+@model RegisterModel
+@{
+
+
+}
+
+<style>
+    /* Fondo gradiente en tonos celestes */
+    body {
+        background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    /* Contenedor principal del formulario */
+    form {
+        background: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        border: 1px solid rgba(173, 216, 230, 0.8); /* Borde celeste */
+        max-width: 400px;
+        width: 100%;
+        text-align: left;
+        margin: 0 auto; /* Centrar horizontalmente */
+    }
+
+    /* Estilo del icono (centrado en un círculo celeste claro) */
+    .form-icon {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+        .form-icon img {
+            width: 100px; /* Ajusta el tamaño de la imagen según lo necesites */
+            border-radius: 50%;
+            border: 2px solid #87cefa;
+        }
+
+    /* Estilo de los labels y inputs */
+    label {
+        color: #4682b4; /* Color celeste oscuro */
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+    input[type="email"], input[type="password"], input[type="text"] {
+        background: rgba(173, 216, 230, 0.2); /* Fondo celeste claro */
+        border: none;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 20px;
+        color: #333;
+        width: 100%;
+        box-sizing: border-box;
+        outline: none;
+    }
+
+    /* Placeholder color */
+    input::placeholder {
+        color: #b5acaa (70, 130, 180, 0.7); /* Placeholder celeste */
+    }
+
+    /* Al hacer foco en los campos, cambiar el color del label a gris */
+    input:focus + label {
+        color: #4682b4; /* Gris agradable */
+    }
+
+    /* Botón de login */
+    button[type="submit"] {
+        background-color: #4682b4; /* Color celeste oscuro */
+        color: white;
+        padding: 15px;
+        width: 100%;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+        button[type="submit"]:hover {
+            background-color: #5a9bd5; /* Más claro al hacer hover */
+        }
+
+    /* Texto de error */
+    .text-danger {
+        color: #ff4d4d;
+    }
+
+    /* Estilo del checkbox y el link */
+    input[type="checkbox"] {
+        margin-right: 10px;
+    }
+
+    a {
+        color: #b5acaa; /* Link celeste oscuro */
+        text-decoration: none;
+    }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+    /* Estilo del link de 'Forgot your password?' */
+    .forgot-password {
+        display: block;
+        margin-top: 10px;
+        text-align: right;
+        color: #b5acaa; /* Celeste claro */
+    }
+
+        .forgot-password:hover {
+            color: #b5acaa; /* Celeste oscuro */
+        }
+</style>
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row justify-content-center align-items-center">
+    <div class="col-md-4">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <div class="form-icon">
+                <img src="https://www.shutterstock.com/image-vector/valet-parking-ticket-image-multiple-600nw-2154028717.jpg" alt="User Icon" />
+            </div>
+            <h2 class="text-center" style="color: #4682b4;">Crear un nuevo usuario</h2> <!-- Título celeste oscuro -->
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-group">
+                <label asp-for="Input.Email">Inserte correo electronico</label>
+                <input asp-for="Input.Email" class="form-control" autocomplete="off" aria-required="true" placeholder="name@example.com" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Password">Contraseña</label>
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Contraseña" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.ConfirmPassword">Confirmar contraseña</label>
+                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Contraseña" />
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg">Registrar usuario</button>
+            <div class="forgot-password">
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6 col-md-offset-2">
+        <section>
+            @*   <h3 style="color: #4682b4;">Use another service to register.</h3> *@
+            <hr />
+            @{
+                if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                {
+                    // <div>
+                    //     <p>
+                    //         There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715" style="color: #4682b4;">
+                    //             article
+                    //             about setting up this ASP.NET application to support logging in via external services
+                    //         </a>.
+                    //     </p>
+                    // </div>
+                }
+                else
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in Model.ExternalLogins!)
+                                {
+                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+                }
+            }
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
